@@ -19,9 +19,9 @@ python test_adpat.py   ## check the install of C extension
 ###### 2.2. parition and reparition
 
 * ParGNN use two stage partition to deal with the load unbalance question, and provide the 3 functions:
-    * graph_partition_dgl_metis:  load graph from local path(or download online automately), and create DGL -format graph. Then run the intial patition.
-    * graph_eval: profile graph the subgraph from the inital parition.
-    * mapping: map the subgraph to a cluster for running in the same GPUs.
+    * graph_partition_dgl_metis:  load graph from local path(or download online automately), and create DGL-format graph. Then run the intial patition by metis.
+    * graph_eval: profile the subgraphs from the inital parition.
+    * mapping: map the subgraphs to a cluster for running in the same GPUs.
 * we provide two scripts to test the partition and repartition process, just run:
     ```shell
     python graph_partition.py
