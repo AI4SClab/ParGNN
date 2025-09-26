@@ -40,9 +40,42 @@ python test_adpat.py   ## check the install of C extension
     sh train_all.sh
     ```
 
+### 4. Citations
 
+To cite this project, you can use the following BibTex citation.
 
+[DAC 2025](https://ieeexplore.ieee.org/document/11133102 "dac2025")
+```
+@INPROCEEDINGS{11133102,
+  author={Gu, Junyu and Li, Shunde and Cao, Rongqiang and Wang, Jue and Wang, Zijian and Liang, Zhiqiang and Liu, Fang and Li, Shigang and Zhou, Chunbao and Wang, Yangang and Chi, Xuebin},
+  booktitle={2025 62nd ACM/IEEE Design Automation Conference (DAC)}, 
+  title={ParGNN: A Scalable Graph Neural Network Training Framework on multi-GPUs}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={1-7},
+  keywords={Training;Accuracy;Design automation;Pipelines;Graphics processing units;Load management;Graph neural networks;Partitioning algorithms;Faces;Convergence;Graph neural network;Full-batch distributed training;Load balancing;Computation and communication overlapping},
+  doi={10.1109/DAC63849.2025.11133102}}
+```
 
+[PPoPP 2024 Poster](https://dl.acm.org/doi/abs/10.1145/3627535.3638488 "ppopp2024")
+```
+@inproceedings{10.1145/3627535.3638488,
+author = {Li, Shunde and Gu, Junyu and Wang, Jue and Yao, Tiechui and Liang, Zhiqiang and Shi, Yumeng and Li, Shigang and Xi, Weiting and Li, Shushen and Zhou, Chunbao and Wang, Yangang and Chi, Xuebin},
+title = {POSTER: ParGNN: Efficient Training for Large-Scale Graph Neural Network on GPU Clusters},
+year = {2024},
+isbn = {9798400704352},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3627535.3638488},
+doi = {10.1145/3627535.3638488},
+pages = {469–471},
+numpages = {3},
+keywords = {graph neural network, load balancing, data transfer hiding, distributed training},
+location = {Edinburgh, United Kingdom},
+series = {PPoPP '24}
+}
+```
 
 
 
