@@ -7,6 +7,7 @@
 #SBATCH --mem=90G
 #SBATCH --output=./logs/part_repart_%j.out
 
+mkdir -p ./logs
 # source environment for the cluster
 source ./xd_start
 

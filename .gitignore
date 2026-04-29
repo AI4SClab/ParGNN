@@ -54,7 +54,9 @@ dkms.conf
 # Data and build directories
 data/
 build/
+*/build/
 pgalb/build/
+pgalb/dist/
 pgalb/csrc/local/
 pgalb/csrc/METIS/local/
 pgalb/csrc/METIS/build/
