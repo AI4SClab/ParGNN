@@ -12,6 +12,8 @@ import dgl
 from dgl.nn.pytorch import GATConv,GraphConv
 import psutil
 import sys
+import warnings
+warnings.filterwarnings("ignore")
 
 def print_memory_usage():
     if torch.cuda.is_available():
@@ -226,7 +228,7 @@ def graph_eval(
         data_gat = data['data_gat']
         return data_comm, data_gcn, data_gat
     
-    device = torch.device('cuda:2')
+    device = torch.device('cuda:0')
     torch.cuda.set_device(device)
     if name in ['ogbn-arxiv']:
         feat_dim = 128
@@ -287,34 +289,36 @@ def graph_eval(
     return data_comm,data_gcn,data_gat
 
 
-def evaluation():
-    datasets : List[str] = ['ogbn-arxiv', 'ogbn-products','yelp','reddit','ogbn-proteins',
-                        'igb-tiny','igb-small','igb-medium']
-    dir_path:str = "../data/DistData"
-
-    num_parts : List[int] = [2,4,8]
-
+def evaluation(datasets: List[str], dir_path: str, num_parts: List[int]):
     for name in datasets:
         for num_part in num_parts:
             data_comm,data_gcn,data_gat = graph_eval(name=name,dir_path=dir_path,num_part=num_part, reused=False)
+
+
+# def profile_compare():
+#     pass
+
 if __name__ == '__main__':
     import sys
 
-    datasets : List[str] = ['ogbn-products','yelp','reddit','ogbn-proteins']
+    datasets : List[str] = ['ogbn-products','yelp','reddit','ogbn-proteins','ogbn-arxiv']
     dir_path:str = "../data/DistData"
 
-    num_parts : List[int] = [16,16,16,16]
-    
-    # k = 4
+    num_parts : List[int] = [64,64,64,64,64]
+    unique_k = 4
     profile_mode = 'both'
     only_eval = False
     for name, num_part in zip(datasets,num_parts):
+        k = num_part // unique_k
+
+        data_comm_original, data_gcn_original, data_gat_original = \
+            graph_eval(name=name,dir_path=dir_path,num_part=k, reused=False)
 
         data_comm,data_gcn,data_gat = graph_eval(name=name,dir_path=dir_path,num_part=num_part, reused=False)
         if only_eval:
             continue
         adapt_alog = adapt_graph(data_comm=data_comm,data_gcn=data_gcn,data_gat=data_gat,com_clamp=0.1)
-        k = num_part // 4
+        
         t0 = time.time()
         reparts = adapt_alog.mapping(k,profile=profile_mode)
         t1 = time.time()
@@ -322,6 +326,11 @@ if __name__ == '__main__':
         torch.save(torch.tensor(reparts), file_path)
         imB_gcn,imB_gat, _ = adapt_alog.get_imbalance(k,reparts)
         print(f'{name} {profile_mode}-profile {num_part} --> {k}: Time:{t1-t0:.4f}')
-        print(f'{name} {num_part}: GAT: {imB_gat:.4f}, GCN: {imB_gcn:.4f}')
 
+        # max/ mean
+        imB_gcn_original = np.max(data_gcn_original) / (np.mean(data_gcn_original) + 1e-6)
+        imB_gat_original = np.max(data_gat_original) / (np.mean(data_gat_original) + 1e-6)
+
+        print(f'{name} {k} DCUs: GAT: {imB_gat_original:.4f}  -->  {imB_gat:.4f}, GCN: {imB_gcn_original:.4f}  -->  {imB_gcn:.4f}')
+        # print(f'{name} {num_part}: GAT_original: {imB_gat_original:.4f}, GCN_original: {imB_gcn_original:.4f}')
         sys.stdout.flush()

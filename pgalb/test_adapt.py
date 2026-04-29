@@ -38,9 +38,8 @@ ewgt = np.random.randint(1, 10, size=num_edges).astype(np.int64)
 indptr = A.indptr.astype(np.int64)
 indices = A.indices.astype(np.int64)
 a = MetisPy(4,num_nodes,1,indptr,indices,vwgt,ewgt)
-
-b = RefinePy(4,num_nodes,1,indptr,indices,vwgt,ewgt,a)
 print("Checking metis: ",a)
+b = RefinePy(4,num_nodes,1,indptr,indices,vwgt,ewgt,a)
 print("Checking adapt: ",b)
 if (sum(a) > 0 and sum(b) > 0):
     print("Checking Pass without error calls.")

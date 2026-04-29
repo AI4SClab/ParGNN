@@ -50,3 +50,29 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Data and build directories
+data/
+build/
+pgalb/build/
+pgalb/csrc/local/
+pgalb/csrc/METIS/local/
+pgalb/csrc/METIS/build/
+pgalb/csrc/GKlib/local/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+
+# Cython generated files
+pgalb/utils_plus.c
+
+# Metis temp files
+pgalb/metis*
+*.swp
+*.swo
+*.swn
+*~

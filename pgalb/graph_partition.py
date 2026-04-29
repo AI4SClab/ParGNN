@@ -6,14 +6,15 @@ import os.path as osp
 import torch.multiprocessing as mp
 from typing import List, Dict
 import time
+import warnings
+warnings.filterwarnings("ignore")
 from ogb.nodeproppred import DglNodePropPredDataset
 def call_back(res):
     return None
 
 def err_call_back(err):
     print(f'!!! ~ error: {str(err)}')
-
-
+    
 def graph_partition_dgl_metis(
     name:str = "ogbn-arxiv",
     dir_path:str = "/work/gujy/data",
@@ -48,9 +49,10 @@ def graph_partition_dgl_metis(
         # print(dataset[0][0])
         graph : dgl.DGLGraph = dataset[0][0]
         label : torch.Tensor = dataset[0][1].reshape(graph.num_nodes(),-1) # type: ignore
-        A = graph.adj()
-        A = dgl.sparse.val_like(A,graph.edata['feat'])
-        feat = A.smean(1)
+        # For ogbn-proteins, use edge features aggregated to nodes as node features
+        # Compatible with older DGL versions
+        import dgl.ops as F_ops
+        feat = F_ops.copy_e_sum(graph, graph.edata['feat'])
         split_idx  = dataset.get_idx_split()
         mask = torch.ones(size=(graph.num_nodes(),), dtype=torch.int32).mul_(-1)
         mask[split_idx["train"]] = 0 # type: ignore
@@ -169,10 +171,17 @@ def graph_partition_dgl_metis(
 
 if __name__ == '__main__':
 
-    datasets : List[str] = ['yelp','reddit',"ogbn-arxiv",'ogbn-products','ogbn-proteins']
+    datasets : List[str] = ['ogbn-proteins','yelp','reddit',"ogbn-arxiv",'ogbn-products']
     dir_path : str = "../data"
     save_path: str = "../data/DistData"
     algo : str = 'metis'
     num_part  = 16
+    unique_k = 4
+
+    print(f"Partitioning with num_part = {num_part}")
     for name in datasets:
         graph_partition_dgl_metis(name=name, dir_path= dir_path, save_path = save_path ,num_part = num_part)
+    
+    print(f"Partitioning with num_part = {num_part * unique_k}")
+    for name in datasets:
+        graph_partition_dgl_metis(name=name, dir_path= dir_path, save_path = save_path ,num_part = num_part * unique_k)

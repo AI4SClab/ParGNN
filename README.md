@@ -11,9 +11,25 @@ ParGNN, an efficient full-batch training system for GNNs, which adopts a profile
 ###### 2.1. setup pgalb
 
 ```shell
-cd pgalb  ## go into the pgalb dirctionary
+# [update] Fixed the miss of source code for GKlib and METIS
+cd ParGNN # make sure you are in the ParGNN directory
+export WORK_DIR=$(pwd)
+
+cd $WORK_DIR/pgalb/csrc/GKlib
+rm -rf build/
+make config prefix=$WORK_DIR/pgalb/csrc/local
+make install
+
+cd $WORK_DIR/pgalb/csrc/METIS
+rm -rf build/
+make config prefix=$WORK_DIR/pgalb/csrc/local gklib_path=$WORK_DIR/pgalb/csrc/local i64=1
+make install
+
+cd $WORK_DIR/pgalb
 python setup.py build_ext --inplace  ## install pgalb
-python test_adpat.py   ## check the install of C extension
+python python test_adapt.py   ## check the install of C extension
+
+python download.py
 ```
 
 ###### 2.2. parition and reparition
@@ -39,8 +55,13 @@ python test_adpat.py   ## check the install of C extension
     cd scripts
     sh train_all.sh
     ```
+### 4. [update] Support for slurm scheduler for GPU cluster on Multi-Node training
 
-### 4. Citations
+* The slurm scripts are in the slurm_scripts directory.
+    * `slurm_scripts/partition_and_repart.slurm`: partition and repartition script for slurm scheduler
+    * `slurm_scripts/train.slurm`: train script for slurm scheduler
+
+### 5. Citations
 
 To cite this project, you can use the following BibTex citation.
 
