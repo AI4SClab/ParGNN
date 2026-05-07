@@ -8,7 +8,7 @@ ParGNN, an efficient full-batch training system for GNNs, which adopts a profile
 
 ### 2. Install PGALB and partition graph data
 
-###### 2.1. setup pgalb
+###### 2.1. [update] setup pgalb
 
 ```shell
 # [update] Fixed the miss of source code for GKlib and METIS
@@ -45,8 +45,8 @@ python download.py
     python graph_partition.py
     python repart.py
     ```
-* data used in the evaluation on paper: (script will download them automately when they are needed)
-    * ogb graph dataset: ogbn-products, ogbn-proteins from https://ogb.stanford.edu/docs/nodeprop/
+* data used in the evaluation on paper: (script will download them automately when they are needed or call the download.py script)
+    * ogb graph dataset: ogbn-products, ogbn-proteins, ogbn-arxiv from https://ogb.stanford.edu/docs/nodeprop/
     * yelp dataset: https://www.dgl.ai/dgl_docs/generated/dgl.data.YelpDataset.html#dgl.data.YelpDataset
     * reddit dataset: https://www.dgl.ai/dgl_docs/generated/dgl.data.RedditDataset.html
 
@@ -60,8 +60,9 @@ python download.py
 ### 4. [update] Support for slurm scheduler for GPU cluster on Multi-Node training
 
 * The slurm scripts are in the slurm_scripts directory.
-    * `slurm_scripts/partition_and_repart.slurm`: partition and repartition script for slurm scheduler
-    * `slurm_scripts/train.slurm`: train script for slurm scheduler
+    * `slurm_scripts/xd_start.sh`: environment setup script for slurm scheduler
+    * `slurm_scripts/partition_and_repart.sh`: partition and repartition script for slurm scheduler
+    * `slurm_scripts/train_call.sh`: train script for slurm scheduler
 
 ### 5. Citations
 
