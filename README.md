@@ -17,11 +17,13 @@ export WORK_DIR=$(pwd)
 
 cd $WORK_DIR/pgalb/csrc/GKlib
 rm -rf build/
+mkdir -p $WORK_DIR/pgalb/csrc/local 
 make config prefix=$WORK_DIR/pgalb/csrc/local
 make install
 
 cd $WORK_DIR/pgalb/csrc/METIS
 rm -rf build/
+mkdir -p $WORK_DIR/pgalb/csrc/local 
 make config prefix=$WORK_DIR/pgalb/csrc/local gklib_path=$WORK_DIR/pgalb/csrc/local i64=1
 make install
 

@@ -78,3 +78,13 @@ pgalb/metis*
 *.swo
 *.swn
 *~
+ 
+# Wheel files
+*.whl
+ 
+# Core dump files
+core.*
+ 
+# Results and logs
+results/
+slurm_scripts/logs/

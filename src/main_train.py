@@ -1,4 +1,6 @@
 
+import warnings
+warnings.filterwarnings("ignore")
 import torch,sys
 import torch.distributed as dist
 import os
@@ -101,7 +103,7 @@ def main(args:argparse.Namespace):
     # model = DDP(model)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr,weight_decay=args.weight_decay)
     model.train()
-    dist.barrier()
+    # dist.barrier()
     if rank == 0:
         if enable_pipeline:
             print(f'Training on {args.dataset} with  {args.reparter} partiioning and pipeline')
@@ -185,7 +187,7 @@ def main(args:argparse.Namespace):
         os.makedirs("../results/",exist_ok=True)
         print(f'save to {filename}')
         torch.save(data_t,filename)
-    dist.barrier()
+    # dist.barrier()
  
 def main_prof(args:argparse.Namespace):
     
@@ -370,7 +372,7 @@ if __name__ == '__main__':
         if torch.cuda.device_count() == 1:
             device = torch.cuda.current_device()
         else:
-            device = torch.device(f'cuda:{local_rank + 4}')
+            device = torch.device(f'cuda:{local_rank}')
         torch.cuda.set_device(device)
     else:
         raise RuntimeError('GPU is not available,please check!!')
@@ -379,6 +381,6 @@ if __name__ == '__main__':
     dist.init_process_group(backend=args.backend, init_method=args.dist_url)
     main(args)
     # main_prof(args)
-    dist.destroy_process_group()
+    # dist.destroy_process_group()
 
     

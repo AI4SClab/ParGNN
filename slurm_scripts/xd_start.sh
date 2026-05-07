@@ -1,0 +1,21 @@
+module purge
+
+module load compiler/devtoolset/7.3.1
+module load mpi/hpcx/2.11.0/gcc-7.3.1
+module load compiler/rocm/dtk/23.10
+module load apps/PyTorch/2.1.0/pytorch-2.1.0-dtk2310
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+# __conda_setup="$('/public/home/cnicai99/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/public/home/cnicai99/miniforge3/etc/profile.d/conda.sh" ]; then
+#         . "/public/home/cnicai99/miniforge3/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/public/home/cnicai99/miniforge3/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
+# conda activate base
+# conda activate py3.8_echo

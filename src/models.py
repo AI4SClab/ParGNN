@@ -87,14 +87,14 @@ class GAT_model(nn.Module):
         self.in_conv =  GATConv(in_feats=in_features, out_feats=hidden_features, num_heads=num_heads, allow_zero_in_degree=True).to(device)
 
         # self.in_conv =  torch.compile(GATConv(in_feats=in_features, out_feats=hidden_features, num_heads=num_heads, allow_zero_in_degree=True).to(device))
-        self.in_conv_tail = torch.compile(FusedLayerNormReLU_dropout(hidden_features * num_heads,dropout).to(device))
-        # self.in_conv_tail = FusedLayerNormReLU_dropout(hidden_features,dropout).to(device)
+        # self.in_conv_tail = torch.compile(FusedLayerNormReLU_dropout(hidden_features * num_heads,dropout).to(device))
+        self.in_conv_tail = FusedLayerNormReLU_dropout(hidden_features * num_heads,dropout).to(device)
         self.hidden_conv_layers = nn.ModuleList()
         self.hidden_conv_layers_retail = nn.ModuleList()
         for _ in range(nlayers-2):
             conv_layer =  GATConv(in_feats=hidden_features * num_heads , out_feats=hidden_features, num_heads=num_heads ,allow_zero_in_degree=True).to(device)
-            retail = torch.compile(FusedLayerNormReLU_dropout(hidden_features * num_heads,dropout).to(device))
-            # retail = FusedLayerNormReLU_dropout(hidden_features,dropout).to(device)
+            # retail = torch.compile(FusedLayerNormReLU_dropout(hidden_features * num_heads,dropout).to(device))
+            retail = FusedLayerNormReLU_dropout(hidden_features * num_heads,dropout).to(device)
             
             self.hidden_conv_layers.append(conv_layer)
             self.hidden_conv_layers_retail.append(retail)
